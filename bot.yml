@@ -1,0 +1,179 @@
+settings:
+  token_env: TOKEN
+  parse_mode: html
+
+buttons:
+  my_balance: '{{ text `my_balance` }}'
+  roulette: '{{ text `roulette` }}'
+
+  lang: &lang
+    unique: lang
+  lang_ru:
+    <<: *lang
+    callback_data: ru
+    text: 🇷🇺
+  lang_en:
+    <<: *lang
+    callback_data: en
+    text: 🇬🇧
+
+  menu: &menu
+    unique: menu
+
+  red_bet: &red_bet
+    unique: r
+  green_bet: &green_bet
+    unique: g
+  black_bet: &black_bet
+    unique: b
+
+  100_red:
+    <<: *red_bet
+    callback_data: 100
+    text: 🔴  100
+  1000_red:
+    <<: *red_bet
+    callback_data: 1000
+    text: 🔴  1000
+  double_red:
+    <<: *red_bet
+    callback_data: x2
+    text: 🔴  x2
+
+  100_green:
+    callback_data: 100
+    <<: *green_bet
+    text: 🍀  100
+  1000_green:
+    <<: *green_bet
+    callback_data: 1000
+    text: 🍀  1000
+  double_green:
+    <<: *green_bet
+    callback_data: x2
+    text: 🍀  x2
+
+  100_black:
+    <<: *black_bet
+    callback_data: 100
+    text: ⚫️ 100
+  1000_black:
+    <<: *black_bet
+    callback_data: 1000
+    text: ⚫️ 1000
+  double_black:
+    <<: *black_bet
+    callback_data: x2
+    text: ⚫️ x2
+
+  balance:
+    unique: balance
+    text: 💰 Баланс
+  roll:
+    unique: roll_roulette
+    text: Крутить рулетку
+
+  reply_balance:
+    text: 💰 Баланс
+  perks:
+    text: 🌟 Перки
+  play:
+    text: 🎰 Играть
+  leaderboard:
+    text: 🏆 Рейтинг
+  bonus:
+    text: 🎁 Бонусы
+
+  participate:
+    unique: participate
+    callback_data: `{{ . }}`
+    text: Участвовать 🎉
+  end_contest:
+    unique: end_contest
+    text: Разыграть 🎊 (только для организатора)
+  cancel_contest:
+    unique: cancel_contest
+    text: Отменить конкурс 😢
+
+  # perks
+  perk: &perk
+    unique: perk
+  mafioso:
+    <<: *perk
+    callback_data: mafioso
+    text: 🎩 Мафиози
+  banker:
+    <<: *perk
+    callback_data: banker
+    text: Банкир 👔
+  hacker:
+    <<: *perk
+    callback_data: hacker
+    text: 📟 Хакер
+  king:
+    <<: *perk
+    callback_data: king
+    text: Король 👑
+  clown:
+    <<: *perk
+    callback_data: clown
+    text: 🤡 Клоун
+  petuh:
+    <<: *perk
+    callback_data: petuh
+    text: Петух 🐔
+  statue:
+    <<: *perk
+    callback_data: statue
+    text: 🗿 Статуя
+  virus:
+    <<: *perk
+    callback_data: virus
+    text: Вирус 🦠
+
+  buy:
+    text: Приобрести за {{ .Price }}₽
+    unique: buy_perk
+    url: '{{ .URL }}'
+  alt_buy:
+    text: Qiwi, Payeer, МТС
+    unique: alt_buy_perk
+    url: '{{.URL}}'
+  support:
+    text: Возникли проблемы?
+    unique: support
+    url: https://t.me/HandySupportBot
+
+  back_to_perks:
+    text: Вернуться
+    unique: perkssss
+
+markups:
+  lang:
+    - [lang_ru, lang_en]
+  roulette:
+    - [100_red, 1000_red, double_red]
+    - [100_green, 1000_green, double_green]
+    - [100_black, 1000_black, double_black]
+    - [balance]
+    - [roll]
+  private_menu:
+    - [play]
+    - [reply_balance, perks]
+    - [leaderboard, bonus]
+  perks_markup:
+    - [mafioso, banker]
+    - [hacker, king]
+    - [clown, petuh]
+    - [statue, virus]
+  contest:
+    - [participate]
+    - [end_contest]
+    - [cancel_contest]
+  buy_perk_menu:
+    - [buy]
+    - [alt_buy]
+    - [support]
+    - [back_to_perks]
+  back_to_perk:
+    - [back_to_perks]
