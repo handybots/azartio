@@ -4,7 +4,7 @@ import (
 	"unicode"
 
 	"github.com/fatih/structs"
-	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/jackc/pgx/stdlib"
 	"github.com/jmoiron/sqlx"
 	"github.com/jmoiron/sqlx/reflectx"
 )
@@ -17,10 +17,11 @@ func init() {
 type DB struct {
 	*sqlx.DB
 	Users UsersStorage
+	Groups GroupsStorage
 }
 
 func Open(url string) (*DB, error) {
-	db, err := sqlx.Open("mysql", url)
+	db, err := sqlx.Connect("pgx", url)
 	if err != nil {
 		return nil, err
 	}

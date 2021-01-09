@@ -14,6 +14,25 @@ buttons:
     callback_data: en
     text: 🇬🇧
 
+  menu: &menu
+    unique: menu
+  bet: &bet
+    unique: bet
+  make_bet_red:
+    <<: *bet
+    callback_data: r
+    text: 🔴
+  make_bet_green:
+    <<: *bet
+    callback_data: g
+    text: 🍀
+  make_bet_black:
+    <<: *bet
+    callback_data: b
+    text: ⚫️
+
 markups:
   lang:
     - [lang_ru, lang_en]
+  menu:
+    - [make_bet_red, make_bet_green, make_bet_black]
