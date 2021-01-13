@@ -19,6 +19,7 @@ func main() {
 		log.Fatal(err)
 	}
 
+
 	b, err := tele.NewBot(lt.Settings())
 	if err != nil {
 		log.Fatal(err)
@@ -51,17 +52,12 @@ func main() {
 	b.OnError = h.OnError
 	b.Use(middleware.Logger(logger, h.LoggerFields))
 	b.Use(lt.Middleware("ru", h.LocaleFunc))
-	b.Use(func(handlerFunc tele.HandlerFunc) tele.HandlerFunc {
-		return func(c tele.Context) error{
-
-			return nil
-		}
-	})
 	// Handlers
 	b.Handle("/start", h.OnStart)
 	b.Handle(lt.Callback("lang"), h.OnLang)
 	b.Handle(lt.Callback("bet"), h.OnBet)
-	b.Handle("/roulette", h.OnMenu)
+
+	b.Handle("/menu", h.OnMenu)
 
 	b.Start()
 }
