@@ -30,9 +30,16 @@ buttons:
     <<: *bet
     callback_data: b
     text: ⚫️
+  double:
+    unique: double
+    text: Удвоить
+  balance:
+    unique: balance
+    text: Баланс
 
 markups:
   lang:
     - [lang_ru, lang_en]
   menu:
     - [make_bet_red, make_bet_green, make_bet_black]
+    - [double, balance]

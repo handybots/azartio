@@ -1,12 +1,14 @@
 package handler
 
 import (
+	"errors"
 	"log"
 
 	tele "gopkg.in/tucnak/telebot.v3"
 )
 
 func (h handler) OnStart(c tele.Context) error {
+	if !c.Message().Private() {return errors.New("start from group")}
 	var (
 		chat = c.Sender()
 		ref  = c.Message().Payload

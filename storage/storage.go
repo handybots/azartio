@@ -18,6 +18,7 @@ type DB struct {
 	*sqlx.DB
 	Users UsersStorage
 	Groups GroupsStorage
+	Bets BetsStorage
 }
 
 func Open(url string) (*DB, error) {
@@ -34,6 +35,7 @@ func Open(url string) (*DB, error) {
 	return &DB{
 		DB:    db,
 		Users: &Users{DB: db},
+		Bets: &Bets{DB: db},
 	}, nil
 }
 

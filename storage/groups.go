@@ -45,3 +45,4 @@ func (db *Groups) ByID(chat Chat) (group Groups, _ error){
 	const q = `select 1 from groups where id = $1`
 	return group, db.Get(&group, q, chat.Recipient())
 }
+

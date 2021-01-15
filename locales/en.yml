@@ -3,3 +3,6 @@ start: |-
 
 menu: |-
   Roulette
+
+double: |-
+  Double

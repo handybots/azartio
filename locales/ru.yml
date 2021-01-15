@@ -3,3 +3,9 @@ start: |-
 
 menu: |-
   Рулетка
+
+double: |-
+  Удвоить
+
+unregistered: |-
+  Прежде чем играть, напиши мне /start

@@ -13,6 +13,8 @@ type (
 		Lang(chat Chat) (string, error)
 		SetLang(chat Chat, lang string) error
 		Charge(amount int64, chat Chat) error
+		ByID(chat Chat) (usr User, _ error)
+		Balance(chat Chat) (a int64, _ error)
 	}
 
 	Users struct {
@@ -20,12 +22,12 @@ type (
 	}
 
 	User struct {
-		CreatedAt time.Time `sq:"created_at,omitempty"`
+		CreatedAt time.Time `db:"created_at" sq:"created_at,omitempty"`
 		UpdatedAt time.Time `sq:"updated_at,omitempty"`
 		Balance int64 `sq:"balance,omitempty"`
-		ID        int64     `sq:"chat_id,omitempty"`
+		ID        int    `db:"id" sq:"id,omitempty"`
 		Lang      string    `sq:"lang,omitempty"`
-		Ref       string    `sq:"ref,omitempty"`
+		Ref       string    `sq:"ref"`
 	}
 
 	Chat interface {
@@ -58,13 +60,26 @@ func (db *Users) SetLang(chat Chat, lang string) error {
 
 func (db *Users) Charge(amount int64, chat Chat) error {
 	const q = `update users set balance = balance + $1 where id = $2`
-	_, err := db.Exec(q, amount, chat.Recipient())
-	return err
+	tx, err := db.Beginx()
+	if err != nil{
+		return err
+	}
+	_, err = tx.Exec(q, amount, chat.Recipient())
+	if err != nil{
+		tx.Rollback()
+		return err
+	}
+	return tx.Commit()
 }
+
 
 func (db *Users) ByID(chat Chat) (usr User, _ error){
 	const q = `select 1 from users where id = $1`
 	return usr, db.Get(&usr, q, chat.Recipient())
 }
 
+func (db *Users) Balance(chat Chat) (a int64, _ error){
+	const q = `select balance from users where id = $1`
+	return a, db.Get(&a, q, chat.Recipient())
+}
 

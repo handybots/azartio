@@ -49,7 +49,7 @@ func (c *Casino) doRoll(bet Bet, n int) (*RollResult, error){
 // pickSign picks a sign depends on n
 func (c *Casino) pickSign(n int) (wonSign string, _ error) { // for test
 	if n < 0 || n > 100{
-		return "", errors.New("casino: pickSign argument must be < 100 and > 0") // я всё ещё хз можно ли паниковать
+		return "", errors.New("casino: pickSign argument must be < 100 and > 0")
 	}
 	switch{
 	case n <= 45:
@@ -61,6 +61,8 @@ func (c *Casino) pickSign(n int) (wonSign string, _ error) { // for test
 	}
 	return wonSign, nil
 }
+
+
 
 func (c *Casino) RollMany(bets []Bet) (result []*RollResult, _ error){
 	n := rand.Intn(100)
@@ -110,7 +112,7 @@ const (
 	Black = "b" // nigger
 )
 
-var Colors=  map[string]string{
+var Colors = map[string]string{
 	Clever: "🍀",
 	Red: "🔴",
 	Black: "⚫️",
