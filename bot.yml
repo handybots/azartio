@@ -3,6 +3,9 @@ settings:
   parse_mode: html
 
 buttons:
+  my_balance: '{{ text `my_balance` }}'
+  roulette: '{{ text `roulette` }}'
+
   lang: &lang
     unique: lang
   lang_ru:
@@ -21,15 +24,15 @@ buttons:
   make_bet_red:
     <<: *bet
     callback_data: r
-    text: 🔴
+    text: 🔴 - 100
   make_bet_green:
     <<: *bet
     callback_data: g
-    text: 🍀
+    text: 🍀 - 100
   make_bet_black:
     <<: *bet
     callback_data: b
-    text: ⚫️
+    text: ⚫️- 100
   double:
     unique: double
     text: Удвоить
@@ -37,9 +40,12 @@ buttons:
     unique: balance
     text: Баланс
 
+
 markups:
   lang:
     - [lang_ru, lang_en]
   menu:
     - [make_bet_red, make_bet_green, make_bet_black]
     - [double, balance]
+  private_menu:
+    - [my_balance, roulette]

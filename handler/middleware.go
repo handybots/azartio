@@ -17,8 +17,8 @@ func (h *handler) Validate() tele.MiddlewareFunc{
 					c.Respond()
 					return errors.New("unregistered")
 				}
-				next(c)
-				return err
+
+				return next(c)
 			}
 		}
 }

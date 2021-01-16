@@ -54,15 +54,17 @@ func main() {
 	b.Use(lt.Middleware("ru", h.LocaleFunc))
 	b.Use()
 	// Handlers
+	b.Handle(tele.OnText , h.OnText)
 	b.Handle("/start", h.OnStart)
 	b.Handle(lt.Callback("lang"), h.OnLang)
 	b.Handle(lt.Callback("bet"), h.OnBet, h.Validate())
 
-	b.Handle("/menu", h.OnMenu)
+	b.Handle("/roulette", h.OnMenu)
 	b.Handle(lt.Callback("balance"), h.OnBalance, h.Validate())
 
 	b.Handle("б",  h.OnBalance, h.Validate())
 	b.Handle("Б",  h.OnBalance, h.Validate())
+
 
 	b.Start()
 }

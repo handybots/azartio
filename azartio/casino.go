@@ -2,6 +2,7 @@ package azartio
 
 import (
 	"errors"
+	"fmt"
 	"math/rand"
 	"time"
 )
@@ -19,7 +20,7 @@ type Casino struct{
 // if n <= 45: wins red
 // if n > 45 and n < 90: wins black
 // if n > 90: wins clever
-func (c *Casino) doRoll(bet Bet, n int) (*RollResult, error){
+func (c *Casino) doRoll(bet *Bet, n int) (*RollResult, error){
 	if bet.Amount <= 0 {
 		return nil, errors.New("casino: bet amount must be > 0")
 	}
@@ -42,7 +43,7 @@ func (c *Casino) doRoll(bet Bet, n int) (*RollResult, error){
 	return &RollResult{
 		Amount: amount,
 		Won: wonSign == bet.Sign,
-		Bet: bet,
+		Bet: *bet,
 	}, nil
 }
 
@@ -64,7 +65,7 @@ func (c *Casino) pickSign(n int) (wonSign string, _ error) { // for test
 
 
 
-func (c *Casino) RollMany(bets []Bet) (result []*RollResult, _ error){
+func (c *Casino) RollMany(bets []*Bet) (result []*RollResult, _ error){
 	n := rand.Intn(100)
 	for _, bet := range bets{
 		r, err := c.doRoll(bet, n)
@@ -79,7 +80,7 @@ func (c *Casino) RollMany(bets []Bet) (result []*RollResult, _ error){
 	return result, nil
 }
 
-func (c *Casino) Roll(bet Bet) (*RollResult, error){
+func (c *Casino) Roll(bet *Bet) (*RollResult, error){
 	n := rand.Intn(100)
 	return c.doRoll(bet, n)
 }
@@ -92,8 +93,12 @@ type Bet struct {
 	ID int
 }
 
-func NewBet(sign string, amount int64, ID int) Bet {
-	return Bet{Sign: sign, Amount: amount, ID: ID}
+func NewBet(sign string, amount int64, ID int) *Bet {
+	return &Bet{Sign: sign, Amount: amount, ID: ID}
+}
+
+func (b Bet) String() string  {
+	return fmt.Sprintf("%d на %s", b.Amount, Colors[b.Sign])
 }
 
 

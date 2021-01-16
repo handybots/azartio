@@ -25,7 +25,7 @@ func (h handler) OnStart(c tele.Context) error {
 			return err
 		}
 	}
-
+	defer c.Send("kto", h.lt.Markup(c, "private_menu"))
 	return c.Send(
 		h.lt.Text(c, "start"),
 		h.lt.Markup(c, "lang"),

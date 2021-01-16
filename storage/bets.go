@@ -8,7 +8,7 @@ import (
 type (
 	BetsStorage interface {
 		ByID(id int) (bet Bet, _ error)
-		Create(bet azartio.Bet, chatID Chat) error
+		Create(bet *azartio.Bet, chatID Chat) error
 		ByUserID(chat Chat) (bets []Bet, _ error)
 		NotDoneByUserID(chat Chat)(bets []Bet, _ error)
 		MakeDone(result *azartio.RollResult, chat Chat) error
@@ -29,7 +29,16 @@ type (
 	}
 )
 
-func (db *Bets) Create(bet azartio.Bet, chatID Chat) error {
+func (b *Bet) AzartioBet() *azartio.Bet{
+	return &azartio.Bet{
+		Sign: b.Sign,
+		Amount: b.Amount,
+		ID: b.ID,
+	}
+}
+
+
+func (db *Bets) Create(bet *azartio.Bet, chatID Chat) error {
 	const q = `insert into bets (user_id, chat_id, amount, sign) values ($1,$2,$3,$4)`
 	_, err := db.Exec(q,bet.ID, chatID.Recipient(), bet.Amount, bet.Sign)
 	return err
