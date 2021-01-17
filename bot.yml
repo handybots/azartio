@@ -44,7 +44,7 @@ buttons:
 markups:
   lang:
     - [lang_ru, lang_en]
-  menu:
+  roulette:
     - [make_bet_red, make_bet_green, make_bet_black]
     - [double, balance]
   private_menu:

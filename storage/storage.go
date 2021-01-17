@@ -36,6 +36,7 @@ func Open(url string) (*DB, error) {
 		DB:    db,
 		Users: &Users{DB: db},
 		Bets: &Bets{DB: db},
+		Groups: &Groups{DB: db},
 	}, nil
 }
 

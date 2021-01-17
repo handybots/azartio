@@ -2,7 +2,7 @@ package azartio
 
 import (
 	"errors"
-	"fmt"
+	tele "gopkg.in/tucnak/telebot.v3"
 	"math/rand"
 	"time"
 )
@@ -90,15 +90,11 @@ func (c *Casino) Roll(bet *Bet) (*RollResult, error){
 type Bet struct {
 	Sign string
 	Amount int64
-	ID int
+	User *tele.User
 }
 
-func NewBet(sign string, amount int64, ID int) *Bet {
-	return &Bet{Sign: sign, Amount: amount, ID: ID}
-}
-
-func (b Bet) String() string  {
-	return fmt.Sprintf("%d на %s", b.Amount, Colors[b.Sign])
+func NewBet(sign string, amount int64, user *tele.User) *Bet {
+	return &Bet{Sign: sign, Amount: amount, User: user}
 }
 
 

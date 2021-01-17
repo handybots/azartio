@@ -74,7 +74,7 @@ func (db *Users) Charge(amount int64, chat Chat) error {
 
 
 func (db *Users) ByID(chat Chat) (usr User, _ error){
-	const q = `select 1 from users where id = $1`
+	const q = `select * from users where id = $1`
 	return usr, db.Get(&usr, q, chat.Recipient())
 }
 

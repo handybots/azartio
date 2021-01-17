@@ -18,3 +18,8 @@ roulette: |-
 
 not_enough_money: |-
   Недостаточно фишек
+
+bets: |-
+  {{ range .Bets }}
+  {{.Sign}} {{.Amount}} - {{.User.FirstName}}
+  {{ end }}

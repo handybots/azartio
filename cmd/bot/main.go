@@ -55,11 +55,12 @@ func main() {
 	b.Use()
 	// Handlers
 	b.Handle(tele.OnText , h.OnText)
+	b.Handle(tele.OnPinned, h.OnPinned)
 	b.Handle("/start", h.OnStart)
 	b.Handle(lt.Callback("lang"), h.OnLang)
 	b.Handle(lt.Callback("bet"), h.OnBet, h.Validate())
 
-	b.Handle("/roulette", h.OnMenu)
+	b.Handle("/roulette", h.OnRoulette)
 	b.Handle(lt.Callback("balance"), h.OnBalance, h.Validate())
 
 	b.Handle("б",  h.OnBalance, h.Validate())
