@@ -19,33 +19,71 @@ buttons:
 
   menu: &menu
     unique: menu
-  bet: &bet
-    unique: bet
-  make_bet_red:
-    <<: *bet
-    callback_data: r
-    text: 🔴 - 100
-  make_bet_green:
-    <<: *bet
-    callback_data: g
-    text: 🍀 - 100
-  make_bet_black:
-    <<: *bet
-    callback_data: b
-    text: ⚫️- 100
-  double:
-    unique: double
-    text: Удвоить
+
+  red_bet: &red_bet
+    unique: r
+  green_bet: &green_bet
+    unique: g
+  black_bet: &black_bet
+    unique: b
+
+  100_red:
+    <<: *red_bet
+    callback_data: 100
+    text: 🔴  100
+  1000_red:
+    <<: *red_bet
+    callback_data: 1000
+    text: 🔴  1000
+  double_red:
+    <<: *red_bet
+    callback_data: x2
+    text: 🔴  x2
+
+  100_green:
+    callback_data: 100
+    <<: *green_bet
+    text: 🍀  100
+  1000_green:
+    <<: *green_bet
+    callback_data: 1000
+    text: 🍀  1000
+  double_green:
+    <<: *green_bet
+    callback_data: x2
+    text: 🍀  x2
+
+  100_black:
+    <<: *black_bet
+    callback_data: 100
+    text: ⚫️ 100
+  1000_black:
+    <<: *black_bet
+    callback_data: 1000
+    text: ⚫️ 1000
+  double_black:
+    <<: *black_bet
+    callback_data: x2
+    text: ⚫️ x2
+
   balance:
     unique: balance
     text: Баланс
+
+  roll:
+    unique: roll_roulette
+    text: Крутить рулетку
+
 
 
 markups:
   lang:
     - [lang_ru, lang_en]
   roulette:
-    - [make_bet_red, make_bet_green, make_bet_black]
-    - [double, balance]
+    - [100_red, 1000_red, double_red]
+    - [100_green, 1000_green, double_green]
+    - [100_black, 1000_black, double_black]
+    - [balance]
+    - [roll]
   private_menu:
     - [my_balance, roulette]

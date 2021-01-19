@@ -8,7 +8,9 @@ import (
 )
 
 func (h handler) OnStart(c tele.Context) error {
-	if !c.Message().Private() {return errors.New("start from group")}
+	if !c.Message().Private() {
+		return errors.New("start from group")
+	}
 	var (
 		chat = c.Sender()
 		ref  = c.Message().Payload

@@ -1,4 +1,8 @@
 -- +goose Up
+drop table users;
+drop table groups;
+drop table bets;
+
 
 create table users (
     created_at    timestamp     not null default now(),
@@ -6,7 +10,8 @@ create table users (
     id            bigint    not null primary key,
     lang          varchar(2)    not null default 'ru',
     ref           varchar(64)   not null default '',
-    balance bigint not null default 0
+    balance bigint not null default 0,
+    last_bonus timestamp not null default '2001-09-28 01:00:00'
 );
 
 create table groups (
@@ -21,7 +26,7 @@ create table bets
     user_id bigint  not null,
     chat_id bigint  not null default 0,
     amount  bigint  not null default 100,
-    sign    char    not null,
+    sign    char    not null default 'r',
     won     boolean not null default false,
     done    boolean not null default false
 );

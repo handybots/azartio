@@ -8,7 +8,7 @@ double: |-
   Удвоить
 
 unregistered: |-
-  Прежде чем играть, напиши мне /start
+  Прежде чем играть, напиши мне в <b>личные сообщения</b> /start
 
 my_balance: |-
   Баланc 💸
@@ -20,6 +20,29 @@ not_enough_money: |-
   Недостаточно фишек
 
 bets: |-
-  {{ range .Bets }}
-  {{.Sign}} {{.Amount}} - {{.User.FirstName}}
+  <b>💵 Ставки</b>
+  {{ range $key, $bet := .Bets }}
+  {{ text $bet.Sign }} {{ $bet.Amount }} - {{ (index $.Chats $key.UserID).FirstName }}
   {{ end }}
+
+roll_result: |-
+  <b>Выпало {{ text .WonSign }}</b>
+  {{ range $key, $result := .Results }}
+  {{ text $result.Bet.Sign }} {{ $result.Amount }} - {{ (index $.Chats $key.UserID).FirstName }} {{ if $result.Won }} выиграл(-а) {{ else }} проиграл(-а) {{ end }}
+  {{ end }}
+
+did_not_bet: |-
+  Ты не сделал ставку на этот знак
+
+rolling: |-
+  Крутим рулетку... (3 сек)
+
+bonus_used: |-
+  Ты уже получал(-а) бонус сегодня
+
+bonus: |-
+  Ты получил(-а) {{ . }}
+
+r: 🔴
+g: 🍀
+b: ⚫️

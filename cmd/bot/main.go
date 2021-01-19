@@ -19,7 +19,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-
 	b, err := tele.NewBot(lt.Settings())
 	if err != nil {
 		log.Fatal(err)
@@ -54,18 +53,23 @@ func main() {
 	b.Use(lt.Middleware("ru", h.LocaleFunc))
 	b.Use()
 	// Handlers
-	b.Handle(tele.OnText , h.OnText)
+	b.Handle(tele.OnText, h.OnText)
 	b.Handle(tele.OnPinned, h.OnPinned)
 	b.Handle("/start", h.OnStart)
 	b.Handle(lt.Callback("lang"), h.OnLang)
-	b.Handle(lt.Callback("bet"), h.OnBet, h.Validate())
+	b.Handle(lt.Callback("red_bet"), h.OnBet, h.Validate())
+	b.Handle(lt.Callback("green_bet"), h.OnBet, h.Validate())
+	b.Handle(lt.Callback("black_bet"), h.OnBet, h.Validate())
+	b.Handle("Рулетка 🎰", h.OnRoulette, h.Validate())
 
 	b.Handle("/roulette", h.OnRoulette)
 	b.Handle(lt.Callback("balance"), h.OnBalance, h.Validate())
+	b.Handle("/bonus", h.OnBonus, h.Validate())
 
-	b.Handle("б",  h.OnBalance, h.Validate())
-	b.Handle("Б",  h.OnBalance, h.Validate())
-
+	b.Handle("б", h.OnBalance, h.Validate())
+	b.Handle("Б", h.OnBalance, h.Validate())
+	b.Handle("/go", h.OnGo, h.Validate())
+	b.Handle(lt.Callback("roll"), h.OnGo, h.Validate())
 
 	b.Start()
 }
