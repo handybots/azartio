@@ -31,6 +31,11 @@ roll_result: |-
   {{ text $result.Bet.Sign }} {{ $result.Amount }} - {{ (index $.Chats $key.UserID).FirstName }} {{ if $result.Won }} выиграл(-а) {{ else }} проиграл(-а) {{ end }}
   {{ end }}
 
+leaderboard: |-
+  {{ range $i, $user := .Users }}
+  {{ text $i }} {{ $user.Balance }} - {{ (index $.Chats $user.ID).FirstName }}
+  {{ end }}
+
 did_not_bet: |-
   Ты не сделал ставку на этот знак
 
@@ -42,6 +47,10 @@ bonus_used: |-
 
 bonus: |-
   Ты получил(-а) {{ . }}
+
+1: 🥇
+2: 🥈
+3: 🥉
 
 r: 🔴
 g: 🍀

@@ -17,6 +17,7 @@ type (
 		Balance(chat Chat) (a int64, _ error)
 		IsLastBonusUsed(chat Chat) (bool, error)
 		UseBonus(chat Chat) error
+		Leaderboard() (users []User, _ error)
 	}
 
 	Users struct {
@@ -30,6 +31,7 @@ type (
 		ID        int       `db:"id" sq:"id,omitempty"`
 		Lang      string    `sq:"lang,omitempty"`
 		Ref       string    `sq:"ref"`
+		LastBonus time.Time `sq:"last_bonus"`
 	}
 
 	Chat interface {
@@ -107,4 +109,9 @@ func (db *Users) UseBonus(chat Chat) error {
 	const q = `update users set last_bonus = now() where id = $1`
 	_, err := db.Exec(q, chat.Recipient())
 	return err
+}
+
+func (db *Users) Leaderboard() (users []User, _ error) {
+	const q = `select * from users order by balance desc`
+	return users, db.Select(&users, q)
 }

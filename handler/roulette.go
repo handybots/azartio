@@ -3,8 +3,8 @@ package handler
 import (
 	"database/sql"
 	"errors"
-	"log"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/handybots/azartio/azartio"
@@ -38,32 +38,62 @@ func (h *handler) OnBet(c tele.Context) error {
 		ChatID:    c.Chat().ID,
 	}
 	var amount int64
-	if c.Data() != "x2" {
-		amount, err = strconv.ParseInt(c.Data(), 10, 64)
+
+	var sign string
+
+	if c.Callback() == nil {
+		var s string
+		m := strings.Split(c.Message().Text, " ")
+		if len(m) == 1 {
+			s = m[0][:len(m[0])-2]
+			sign = azartio.TranslateBet(m[0][len(m[0])-2:])
+		} else {
+			s = m[0]
+			sign = azartio.TranslateBet(m[1])
+			if sign == "" {
+				sign = azartio.TranslateBet(m[2])
+			}
+		}
+		var err error
+
+		amount, err = strconv.ParseInt(s, 10, 64)
 		if err != nil {
 			return err
 		}
-	} else {
-		bets, err := h.db.Bets.NotDoneByUserID(c.Sender())
-		if err != nil {
-			if err == sql.ErrNoRows {
-				c.Respond(&tele.CallbackResponse{Text: h.lt.Text(c, "did_not_bet")})
-			} else {
-				return err
-			}
-		}
-		betsx, err := h.collapseBets(bets)
-		for _, bet := range betsx.Bets {
-			if bet.Sign == c.Callback().Unique {
-				log.Println(bet.Amount * 2)
-				amount = bet.Amount * 2
-				break
-			}
-		}
-		if amount == 0 {
-			c.Respond(&tele.CallbackResponse{Text: h.lt.Text(c, "did_not_bet")})
+		if sign == "" {
 			return nil
 		}
+		h.b.Delete(c.Message())
+	} else {
+		sign = c.Callback().Unique
+
+		if c.Data() != "x2" {
+			amount, err = strconv.ParseInt(c.Data(), 10, 64)
+			if err != nil {
+				return err
+			}
+		} else {
+			bets, err := h.db.Bets.NotDoneByUserID(c.Sender(), c.Chat())
+			if err != nil {
+				if err == sql.ErrNoRows {
+					c.Respond(&tele.CallbackResponse{Text: h.lt.Text(c, "did_not_bet")})
+				} else {
+					return err
+				}
+			}
+			betsx, err := h.collapseBets(bets)
+			for _, bet := range betsx.Bets {
+				if bet.Sign == sign {
+					amount = bet.Amount
+					break
+				}
+			}
+			if amount == 0 {
+				c.Respond(&tele.CallbackResponse{Text: h.lt.Text(c, "did_not_bet")})
+				return nil
+			}
+		}
+
 	}
 	balance, err := h.db.Users.Balance(c.Sender())
 	if err != nil {
@@ -71,19 +101,19 @@ func (h *handler) OnBet(c tele.Context) error {
 	}
 
 	if balance-amount <= 0 {
-		err := c.Respond(&tele.CallbackResponse{
+		c.Respond(&tele.CallbackResponse{
 			Text: h.lt.Text(c, "not_enough_money"),
 		})
-		return err
+		return nil
 	}
 
-	if _, ok := azartio.Colors[c.Callback().Unique]; ok == false {
+	if _, ok := azartio.Colors[sign]; ok == false {
 		return errors.New("handler: unknown sign in callback unique")
 	}
 
 	h.db.Users.Charge(-amount, c.Sender())
 
-	bet := azartio.NewBet(c.Callback().Unique, amount, c.Sender().ID)
+	bet := azartio.NewBet(sign, amount, c.Sender().ID)
 
 	err = h.db.Bets.Create(bet, c.Chat())
 	if err != nil {
@@ -160,13 +190,13 @@ func (h *handler) OnGo(c tele.Context) error {
 		return err
 	}
 
-	j, err := h.collapseBets(bets)
+	betsx, err := h.collapseBets(bets)
 	if err != nil {
 		return err
 	}
 
-	azartioBets := make([]*azartio.Bet, 0, len(j.Bets))
-	for _, bet := range j.Bets {
+	azartioBets := make([]*azartio.Bet, 0, len(betsx.Bets))
+	for _, bet := range betsx.Bets {
 		azartioBets = append(azartioBets, bet.ToAzartioBet(bet.UserID))
 	}
 	type Result struct {
@@ -181,23 +211,23 @@ func (h *handler) OnGo(c tele.Context) error {
 
 	jointResults := make(map[key]*azartio.RollResult)
 	for _, result := range results {
-		if _, ok := j.Chats[result.Bet.UserID]; !ok {
+		if _, ok := betsx.Chats[result.Bet.UserID]; !ok {
 			chat, err := h.b.ChatByID(strconv.Itoa(result.Bet.UserID))
 			if err != nil {
 				return err
 			}
-			j.Chats[result.Bet.UserID] = chat
+			betsx.Chats[result.Bet.UserID] = chat
 		}
 
 		k := key{result.Bet.UserID, result.Bet.Sign}
 		jointResults[k] = result
 		if result.Won {
-			err := h.db.Users.Charge(+result.Amount, j.Chats[result.Bet.UserID])
+			err := h.db.Users.Charge(+result.Amount, betsx.Chats[result.Bet.UserID])
 			if err != nil {
 				return err
 			}
 		}
-		err := h.db.Bets.MakeDone(result, j.Chats[result.Bet.UserID])
+		err := h.db.Bets.MakeDoneByChat(result, betsx.Chats[result.Bet.UserID], c.Chat())
 		if err != nil {
 			return err
 		}
@@ -215,7 +245,7 @@ func (h *handler) OnGo(c tele.Context) error {
 	a, b := h.lt.Text(c, "roll_result", Result{
 		WonSign: results[0].WonSign,
 		Results: jointResults,
-		Chats:   j.Chats,
+		Chats:   betsx.Chats,
 	}), h.lt.Markup(c, "roulette")
 
 	time.AfterFunc(3*time.Second, func() {

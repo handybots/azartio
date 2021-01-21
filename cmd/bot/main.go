@@ -56,11 +56,11 @@ func main() {
 	b.Handle(tele.OnText, h.OnText)
 	b.Handle(tele.OnPinned, h.OnPinned)
 	b.Handle("/start", h.OnStart)
-	b.Handle(lt.Callback("lang"), h.OnLang)
 	b.Handle(lt.Callback("red_bet"), h.OnBet, h.Validate())
 	b.Handle(lt.Callback("green_bet"), h.OnBet, h.Validate())
 	b.Handle(lt.Callback("black_bet"), h.OnBet, h.Validate())
 	b.Handle("Рулетка 🎰", h.OnRoulette, h.Validate())
+	b.Handle("/leaderboard", h.OnLeaderboard)
 
 	b.Handle("/roulette", h.OnRoulette)
 	b.Handle(lt.Callback("balance"), h.OnBalance, h.Validate())

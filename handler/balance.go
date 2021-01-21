@@ -21,10 +21,9 @@ func (h *handler) OnBalance(c tele.Context) error {
 		}
 	}
 	m, err := h.b.Send(c.Chat(), text)
-	time.AfterFunc(5*time.Second, func() {
-		if err := h.b.Delete(m); err != nil {
-			h.b.OnError(err, c)
-		}
-	})
+	time.Sleep(5 * time.Second)
+	if err := h.b.Delete(m); err != nil {
+		h.b.OnError(err, c)
+	}
 	return err
 }
