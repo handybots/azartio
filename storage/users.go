@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/jackc/pgx/pgtype"
-
 	"github.com/jmoiron/sqlx"
 )
 
@@ -12,14 +11,13 @@ type (
 	UsersStorage interface {
 		Create(chat Chat, ref string) error
 		Exists(chat Chat) (bool, error)
-		Lang(chat Chat) (string, error)
-		SetLang(chat Chat, lang string) error
 		Charge(amount int64, chat Chat) error
 		ByID(chat Chat) (usr User, _ error)
 		Balance(chat Chat) (a int64, _ error)
 		IsLastBonusUsed(chat Chat) (bool, error)
 		UseBonus(chat Chat) error
 		Leaderboard() (users []User, _ error)
+		AddPerk(chat Chat, perk string) error
 	}
 
 	Users struct {
@@ -27,20 +25,25 @@ type (
 	}
 
 	User struct {
-		CreatedAt time.Time `sq:"created_at,omitempty"`
-		UpdatedAt time.Time `sq:"updated_at,omitempty"`
-		Balance   int64     `sq:"balance,omitempty"`
-		ID        int       `sq:"id,omitempty"`
-		Lang      string    `sq:"lang,omitempty"`
-		Ref       string    `sq:"ref"`
-		LastBonus time.Time `sq:"last_bonus"`
-Perks     pgtype.VarcharArray `sq:"perks,omitempty"`
+		CreatedAt  time.Time           `sq:"created_at,omitempty"`
+		UpdatedAt  time.Time           `sq:"updated_at,omitempty"`
+		ID         int                 `sq:"id,omitempty"`
+		Lang       string              `sq:"lang,omitempty"` // TODO: remove
+		Balance    int64               `sq:"balance,omitempty"`
+		Ref        string              `sq:"ref,omitempty"`
+		LastBonus  time.Time           `sq:"last_bonus"`
+		PerksArray pgtype.VarcharArray `db:"perks" sq:"perks,omitempty"`
 	}
 
 	Chat interface {
 		Recipient() string
 	}
 )
+
+func (u User) Perks() (ps []string) {
+	u.PerksArray.AssignTo(&ps)
+	return
+}
 
 func (db *Users) Create(chat Chat, ref string) error {
 	const q = `INSERT INTO users (id, lang, ref) VALUES ($1, 'ru', $2)`
@@ -66,16 +69,8 @@ func (db *Users) SetLang(chat Chat, lang string) error {
 
 func (db *Users) Charge(amount int64, chat Chat) error {
 	const q = `update users set balance = balance + $1 where id = $2`
-	tx, err := db.Beginx()
-	if err != nil {
-		return err
-	}
-	_, err = tx.Exec(q, amount, chat.Recipient())
-	if err != nil {
-		tx.Rollback()
-		return err
-	}
-	return tx.Commit()
+	_, err := db.Exec(q, amount, chat.Recipient())
+	return err
 }
 
 func (db *Users) ByID(chat Chat) (usr User, _ error) {
@@ -97,6 +92,7 @@ func (db *Users) IsLastBonusUsed(chat Chat) (bool, error) {
             where id = $1
         )::timestamp
     );`
+
 	var dayDifference int
 	err := db.Get(&dayDifference, q, chat.Recipient())
 	if err != nil {
@@ -115,12 +111,12 @@ func (db *Users) UseBonus(chat Chat) error {
 }
 
 func (db *Users) Leaderboard() (users []User, _ error) {
-	const q = `select * from users order by balance desc`
+	const q = `select * from users order by balance desc limit 10`
 	return users, db.Select(&users, q)
 }
 
-func (db *Users) AddPerk(chat Chat, perkName string) error {
+func (db *Users) AddPerk(chat Chat, perk string) error {
 	const q = `update users set perks = array_append(perks, $1) where id = $2`
-	_, err := db.Exec(q, perkName, chat.Recipient())
+	_, err := db.Exec(q, perk, chat.Recipient())
 	return err
 }

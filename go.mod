@@ -16,5 +16,5 @@ require (
 	github.com/sirupsen/logrus v1.7.0
 	github.com/stretchr/testify v1.5.1
 	golang.org/x/crypto v0.0.0-20201221181555-eec23a3978ad // indirect
-	gopkg.in/tucnak/telebot.v3 v3.0.0-20201121142328-9ecc5248c623
+	gopkg.in/tucnak/telebot.v3 v3.0.0-20210620160031-9c67c3159284
 )

@@ -2,7 +2,9 @@ package main
 
 import (
 	"log"
+	"math/rand"
 	"os"
+	"time"
 
 	"github.com/demget/clickrus"
 	"github.com/demget/don"
@@ -15,6 +17,10 @@ import (
 	"gopkg.in/tucnak/telebot.v3/layout"
 	"gopkg.in/tucnak/telebot.v3/middleware"
 )
+
+func init() {
+	rand.Seed(time.Now().UnixNano())
+}
 
 func main() {
 	layout.AddFunc("increment", increment)
@@ -64,40 +70,56 @@ func main() {
 	// Middleware
 	b.OnError = h.OnError
 	b.Use(middleware.Logger(logger, h.LoggerFields))
-	b.Use(lt.Middleware("ru", h.LocaleFunc))
+	b.Use(lt.Middleware("ru"))
+	b.Use(h.Validate)
 
 	// Handlers
-	b.Handle(tele.OnText, h.OnText)
+	//b.Handle(tele.OnText, h.OnText)
 	b.Handle(tele.OnPinned, h.OnPinned)
 	b.Handle("/start", h.OnStart)
-	b.Handle(lt.Callback("red_bet"), h.OnBet, h.Validate())
-	b.Handle(lt.Callback("green_bet"), h.OnBet, h.Validate())
-	b.Handle(lt.Callback("black_bet"), h.OnBet, h.Validate())
-	b.Handle(lt.Callback("roulette"), h.OnRoulette, h.Validate())
-	b.Handle(lt.Callback("play"), h.OnRoulette, h.Validate())
-	b.Handle(lt.Callback("reply_balance"), h.OnBalance, h.Validate())
-	b.Handle(lt.Callback("perks"), h.OnPerks, h.Validate())
-	b.Handle("/perks", h.OnPerks, h.Validate())
-	b.Handle(lt.Callback("back_to_perks"), h.OnPerks, h.Validate())
-	b.Handle(lt.Callback("perk"), h.OnPerk, h.Validate())
-	b.Handle(lt.Callback("bonus"), h.OnBonuses, h.Validate())
+
+	// Menu
+	b.Handle(lt.Callback("play"), h.OnRoulette)
+	b.Handle(lt.Callback("roll"), h.OnRouletteGo)
+	b.Handle(lt.Callback("stats"), h.OnStats)
 	b.Handle(lt.Callback("leaderboard"), h.OnLeaderboard)
+	b.Handle(lt.Callback("perks"), h.OnPerks)
+	b.Handle(lt.Callback("bonuses"), h.OnBonuses)
+
+	// Aliases
+	b.Handle("/roll", h.OnRoulette)
+	b.Handle("/go", h.OnRouletteGo)
+	b.Handle("/balance", h.OnStats)
 	b.Handle("/leaderboard", h.OnLeaderboard)
-	b.Handle("/roulette", h.OnRoulette)
-	b.Handle(lt.Callback("balance"), h.OnBalance, h.Validate())
-	b.Handle("/bonus", h.OnBonus, h.Validate())
-	b.Handle("б", h.OnBalance, h.Validate())
-	b.Handle("Б", h.OnBalance, h.Validate())
-	b.Handle("/go", h.OnGo, h.Validate())
-	b.Handle(lt.Callback("roll"), h.OnGo, h.Validate())
-	b.Handle(lt.Callback("participate"), h.OnParticipate, h.Validate())
-	b.Handle("/contest", h.OnMakeContest, h.Validate())
+	b.Handle("/perks", h.OnPerks)
+	b.Handle("/bonus", h.OnBonuses)
+
+	// Game
+	b.Handle(lt.Callback("bet_r"), h.OnRouletteBet)
+	b.Handle(lt.Callback("bet_g"), h.OnRouletteBet)
+	b.Handle(lt.Callback("bet_b"), h.OnRouletteBet)
+
+	// Perks
+	b.Handle(lt.Callback("perk"), h.OnPerk)
+	b.Handle(lt.Callback("perks_back"), h.OnPerks)
+
+	// Bonuses
+	b.Handle(lt.Callback("bonus_daily"), h.OnBonusDaily)
+	b.Handle(lt.Callback("bonus_sponsor"), h.OnBonusSponsor)
+
+	// Contests
+	b.Handle(lt.Callback("participate"), h.OnParticipate)
+	b.Handle("/contest", h.OnMakeContest)
+
+	// Admin
+	b.Handle("/_balance", h.AdminBalance)
+	b.Handle("/_perk", h.AdminPerk)
 
 	b.Start()
 }
 
 var clickHouseConfig = clickrus.Config{
 	Addr:    os.Getenv("CLICKHOUSE_URL"),
-	Columns: []string{"event", "user_id"},
+	Columns: []string{"event", "user_id", "chat_id"},
 	Table:   "azartio.logs",
 }

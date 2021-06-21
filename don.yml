@@ -1,21 +1,28 @@
 
-# level 1 - cosmetic, level 2 - active
-# Prices in rubles
-
 mafioso:
   level: 2
   scopes:
     - +10%
-    - onWin
   meta:
     price: '50'
-    multiplier: 10 # in percents
 
 banker:
   level: 2
   scopes:
     - -10%
-    - onLose
   meta:
     price: '50'
-    multiplier: 10
+
+hacker:
+  level: 2
+  scopes:
+    - autoBonuses
+  meta:
+    price: '100'
+
+miser:
+  level: 2
+  scopes:
+    - doubleBonuses
+  meta:
+    price: '100'

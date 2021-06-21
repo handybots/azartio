@@ -24,10 +24,10 @@ type Contest struct {
 
 func (h handler) OnText(c tele.Context) error {
 	if c.Message().Text == h.lt.Text(c, "my_balance") {
-		return h.OnBalance(c)
+		return h.OnStats(c)
 	}
 	if reBet.MatchString(c.Message().Text) {
-		return h.OnBet(c)
+		return h.OnRouletteBet(c)
 	}
 
 	state, ok := states[c.Sender().Recipient()]

@@ -2,30 +2,60 @@ package handler
 
 import (
 	tele "gopkg.in/tucnak/telebot.v3"
+	"time"
 )
 
-func (h *handler) OnPerks(c tele.Context) error {
-	_, err := h.b.Edit(c.Message(), h.lt.Text(c, "perks"), h.lt.Markup(c, "perks_markup"))
-	if err != nil {
-		_, err = h.b.Send(c.Chat(), h.lt.Text(c, "perks"), h.lt.Markup(c, "perks_markup"))
-	}
-	return err
+type BuyPerks struct {
+	URL   string
+	Price int
+}
 
+func (h *handler) OnPerks(c tele.Context) error {
+	user, err := h.db.Users.ByID(c.Sender())
+	if err != nil {
+		return err
+	}
+
+	if c.Callback() != nil {
+		return c.Edit(
+			h.lt.Text(c, "perks", user.Perks()),
+			h.lt.Markup(c, "perks"),
+		)
+	}
+
+	if !c.Message().Private() {
+		msg, err := h.b.Reply(
+			c.Message(),
+			h.lt.Text(c, "perks", user.Perks()),
+			h.lt.Markup(c, "perks"),
+		)
+
+		time.AfterFunc(10*time.Second, func() {
+			c.Delete()
+			h.b.Delete(msg)
+		})
+
+		return err
+	}
+
+	return c.Send(
+		h.lt.Text(c, "perks", user.Perks()),
+		h.lt.Markup(c, "perks"),
+	)
 }
 
 func (h *handler) OnPerk(c tele.Context) error {
-	type BuyPerks struct {
-		URL   string
-		Price int
+	don := h.dons.Get(c.Data())
+	if don.Level == 0 {
+		return c.Edit(
+			h.lt.Text(c, "coming_soon"),
+			h.lt.Markup(c, "perks_back"),
+			tele.NoPreview,
+		)
 	}
-	perk := h.lt.Text(c, c.Data()+"_desc")
-	if perk == "" {
-		h.b.Edit(c.Message(), "Not available now", h.lt.Markup(c, "back_to_perk"))
-		return nil
-	}
-	d := h.d.Get(c.Data())
-	i := d.Int("price")
-	_, err := h.b.Edit(c.Message(), perk, h.lt.Markup(c, "buy_perk_menu", BuyPerks{"https://www.google.com/", i}))
-	return err
 
+	return c.Edit(
+		h.lt.Text(c, "perk", don.Name),
+		h.lt.Markup(c, "perk_buy", don.Int("price")),
+	)
 }

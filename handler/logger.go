@@ -16,8 +16,14 @@ func (h handler) LoggerFields(c tele.Context) logrus.Fields {
 		f["event"] = "message"
 	}
 
-	if user := c.Sender(); user != nil {
+	user := c.Sender()
+	if user != nil {
 		f["user_id"] = user.Recipient()
+
+		chat := c.Chat()
+		if chat != nil && chat.Recipient() != user.Recipient() {
+			f["chat_id"] = chat.Recipient()
+		}
 	}
 
 	return f

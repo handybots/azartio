@@ -8,7 +8,7 @@ import (
 )
 
 func TestCasino_RollMany(t *testing.T) {
-	casino := &Casino{}
+	casino := &Roulette{}
 	for i := 0; i <= 1000000; i++ {
 		sign := []string{Red, Clever, Black}[rand.Intn(3)]
 		amount := rand.Int63n(100000000000000)

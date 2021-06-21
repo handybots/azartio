@@ -1,34 +1,70 @@
 package handler
 
 import (
-	"github.com/handybots/azartio/storage"
 	"strconv"
 
+	"github.com/handybots/azartio/storage"
 	tele "gopkg.in/tucnak/telebot.v3"
 )
 
 type Leaderboard struct {
-		Users []storage.User
-		Chats map[int]*tele.Chat
-	}
+	Top3  []LeaderboardUser
+	Top10 []LeaderboardUser
+	You   LeaderboardUser
+}
+
+type LeaderboardUser struct {
+	storage.User
+	*tele.Chat
+	Place int
+}
 
 func (h handler) OnLeaderboard(c tele.Context) error {
-	chats := make(map[int]*tele.Chat)
+	you, err := h.db.Users.ByID(c.Sender())
+	if err != nil {
+		return err
+	}
+
+	// NOTE: it will be extremely inefficient
 
 	users, err := h.db.Users.Leaderboard()
 	if err != nil {
 		return err
 	}
 
-	for _, user := range users {
+	var place int
+	for i, user := range users {
+		if user.ID == c.Sender().ID {
+			place = i + 1
+			break
+		}
+	}
+
+	lb := Leaderboard{
+		You: LeaderboardUser{User: you, Chat: c.Chat(), Place: place},
+	}
+	if len(users) >= 10 {
+		users = users[:9]
+	}
+
+	for i, user := range users {
 		chat, err := h.b.ChatByID(strconv.Itoa(user.ID))
 		if err != nil {
 			return err
 		}
-		chats[user.ID] = chat
+
+		lbu := LeaderboardUser{
+			User:  user,
+			Chat:  chat,
+			Place: i + 1,
+		}
+
+		if i < 3 {
+			lb.Top3 = append(lb.Top3, lbu)
+		} else {
+			lb.Top10 = append(lb.Top10, lbu)
+		}
 	}
 
-	lb := Leaderboard{Users: users, Chats: chats}
-	_, err = h.b.Send(c.Chat(), h.lt.Text(c, "leaderboard", lb))
-	return nil
+	return c.Send(h.lt.Text(c, "leaderboard", lb))
 }
