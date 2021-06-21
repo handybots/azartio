@@ -125,17 +125,6 @@ buttons:
     text: Вернуться
     unique: perks_back
 
-  participate:
-    unique: participate
-    callback_data: `{ { . } }`
-    text: Участвовать 🎉
-  end_contest:
-    unique: end_contest
-    text: Разыграть 🎊 (только для организатора)
-  cancel_contest:
-    unique: cancel_contest
-    text: Отменить конкурс 😢
-
 markups:
   private_menu:
     - [ play ]
@@ -165,7 +154,3 @@ markups:
     - [ perks_back ]
   perks_back:
     - [ perks_back ]
-  contest:
-    - [ participate ]
-    - [ end_contest ]
-    - [ cancel_contest ]

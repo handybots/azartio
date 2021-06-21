@@ -27,15 +27,4 @@ create table bets (
     done            boolean         not null default false
 );
 
--- create table contests (
---     amount          bigint          not null default 100,
---     creator_id      bigint          not null,
---     chat_id         bigint          not null default 0,
---     id              serial          not null primary key,
---     done            boolean         not null default false,
---     participants    varchar(256)[]  not null default array[],
---     canceled        boolean         not null default false,
---     winner_id       bigint          not null default 0
--- );
-
 create index idx_bets_user_id ON bets (user_id);

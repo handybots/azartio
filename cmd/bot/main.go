@@ -107,10 +107,6 @@ func main() {
 	b.Handle(lt.Callback("bonus_daily"), h.OnBonusDaily)
 	b.Handle(lt.Callback("bonus_sponsor"), h.OnBonusSponsor)
 
-	// Contests
-	b.Handle(lt.Callback("participate"), h.OnParticipate)
-	b.Handle("/contest", h.OnMakeContest)
-
 	// Admin
 	b.Handle("/_balance", h.AdminBalance)
 	b.Handle("/_perk", h.AdminPerk)
