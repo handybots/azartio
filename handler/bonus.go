@@ -42,7 +42,7 @@ func (h handler) OnBonusDaily(c tele.Context) error {
 	}
 
 	bonus := h.lt.Int64("bonuses.daily")
-	if err = h.db.Users.Charge(bonus, c.Sender()); err != nil {
+	if err = h.chargeBonus(c.Sender(), &bonus); err != nil {
 		return err
 	}
 	if err := h.db.Users.UseBonus(c.Sender()); err != nil {
@@ -55,14 +55,7 @@ func (h handler) OnBonusDaily(c tele.Context) error {
 }
 
 func (h handler) OnBonusSponsor(c tele.Context) error {
-	sponsor := h.lt.ChatID("sponsor_chat")
-	member, err := h.b.ChatMemberOf(sponsor, c.Sender())
-	if err != nil {
-		return err
-	}
-
-	switch member.Role {
-	case tele.Restricted, tele.Kicked, tele.Left:
+	if !h.subscribedOnSponsor(c.Sender()) {
 		return c.Respond(&tele.CallbackResponse{
 			Text:      h.lt.Text(c, "not_subscribed"),
 			ShowAlert: true,
@@ -70,9 +63,42 @@ func (h handler) OnBonusSponsor(c tele.Context) error {
 	}
 
 	bonus := h.lt.Int64("bonuses.sponsor")
-	if err := h.db.Users.Charge(bonus, c.Sender()); err != nil {
+	if err := h.chargeBonus(c.Sender(), &bonus); err != nil {
+		return err
+	}
+
+	if err := h.db.Users.SetSubscribed(c.Sender(), true); err != nil {
 		return err
 	}
 
 	return c.Send(h.lt.Text(c, "bonus", bonus))
+}
+
+func (h handler) subscribedOnSponsor(r tele.Recipient) bool {
+	sponsor := h.lt.ChatID("sponsor_chat")
+
+	member, err := h.b.ChatMemberOf(sponsor, r)
+	if err != nil {
+		return false
+	}
+
+	switch member.Role {
+	case tele.Restricted, tele.Kicked, tele.Left:
+		return true
+	default:
+		return false
+	}
+}
+
+func (h handler) chargeBonus(r tele.Recipient, bonus *int64) error {
+	user, err := h.db.Users.ByID(r)
+	if err != nil {
+		return err
+	}
+
+	if h.dons.Scope("doubleBonuses", user.Perks()...) {
+		*bonus *= 2
+	}
+
+	return h.db.Users.Charge(*bonus, r)
 }

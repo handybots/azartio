@@ -72,6 +72,7 @@ func main() {
 	b.Use(middleware.Logger(logger, h.LoggerFields))
 	b.Use(lt.Middleware("ru"))
 	b.Use(h.Validate)
+	b.Use(h.ApplyBonuses)
 
 	// Handlers
 	//b.Handle(tele.OnText, h.OnText)

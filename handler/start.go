@@ -38,13 +38,14 @@ func (h handler) OnStart(c tele.Context) error {
 
 		refBy, err := h.b.ChatByID(ref)
 		if err == nil {
-			err := h.db.Users.Charge(friendBonus, chat)
-			if err == nil {
+			if err := h.chargeBonus(chat, &friendBonus); err == nil {
 				h.b.Send(chat, h.lt.Text(c, "ref"))
 			}
 
-			h.db.Users.Charge(friendBonus, refBy)
-			defer h.b.Send(refBy, h.lt.Text(c, "join_ref", chat.Recipient()))
+			if err := h.chargeBonus(chat, &friendBonus); err == nil {
+				defer h.b.Send(refBy, h.lt.Text(c, "join_ref", chat.Recipient()))
+			}
+
 		}
 	}
 

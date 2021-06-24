@@ -16,6 +16,8 @@ type (
 		Balance(chat Chat) (a int64, _ error)
 		IsLastBonusUsed(chat Chat) (bool, error)
 		UseBonus(chat Chat) error
+		Subscribed(chat Chat) bool
+		SetSubscribed(chat Chat, s bool) error
 		Leaderboard() (users []User, _ error)
 		AddPerk(chat Chat, perk string) error
 	}
@@ -29,9 +31,10 @@ type (
 		UpdatedAt  time.Time           `sq:"updated_at,omitempty"`
 		ID         int                 `sq:"id,omitempty"`
 		Lang       string              `sq:"lang,omitempty"` // TODO: remove
-		Balance    int64               `sq:"balance,omitempty"`
 		Ref        string              `sq:"ref,omitempty"`
-		LastBonus  time.Time           `sq:"last_bonus"`
+		Balance    int64               `sq:"balance,omitempty"`
+		LastBonus  time.Time           `sq:"last_bonus,omitempty"`
+		Subscribed bool                `sq:"subscribed,omitempty"`
 		PerksArray pgtype.VarcharArray `db:"perks" sq:"perks,omitempty"`
 	}
 
@@ -107,6 +110,17 @@ func (db *Users) IsLastBonusUsed(chat Chat) (bool, error) {
 func (db *Users) UseBonus(chat Chat) error {
 	const q = `update users set last_bonus = now() where id = $1`
 	_, err := db.Exec(q, chat.Recipient())
+	return err
+}
+
+func (db *Users) Subscribed(chat Chat) (sub bool) {
+	const q = `select subscribed from users where id = $1`
+	return db.Get(&sub, q, chat.Recipient()) == nil && sub
+}
+
+func (db *Users) SetSubscribed(chat Chat, sub bool) error {
+	const q = `update users set subscribed = $2 where id = $1`
+	_, err := db.Exec(q, chat.Recipient(), sub)
 	return err
 }
 
