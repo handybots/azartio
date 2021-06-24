@@ -3,6 +3,7 @@ settings:
   parse_mode: html
 
 config:
+  addr: ':9091' # payment receivers
   sponsor_chat: -1001381320622
 
   bonuses.start: 500
@@ -113,13 +114,13 @@ buttons:
     text: Вирус 🦠
 
   perk_buy:
-    text: Приобрести за {{ . }}₽
-    url: 'https://google.com'
+    text: Приобрести за {{ .Amount }}₽
+    url: '{{ .EnotioURL }}&c={{ text (print `perk_` .Perk) }}'
   perk_buy_alt:
-    text: Qiwi, Payeer, МТС
-    url: 'https://google.com'
-  support:
-    text: Возникли проблемы?
+    text: Не получается оплатить?
+    url: '{{ .AnypayURL }}&desc={{ text (print `perk_` .Perk) }}'
+  perks_support:
+    text: Все ещё есть проблемы?
     url: https://t.me/HandyManagerBot
   perks_back:
     text: Вернуться
@@ -150,7 +151,7 @@ markups:
   perk_buy:
     - [ perk_buy ]
     - [ perk_buy_alt ]
-    - [ support ]
+    - [ perks_support ]
     - [ perks_back ]
   perks_back:
     - [ perks_back ]

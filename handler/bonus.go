@@ -96,7 +96,7 @@ func (h handler) chargeBonus(r tele.Recipient, bonus *int64) error {
 		return err
 	}
 
-	if h.dons.Scope("doubleBonuses", user.Perks()...) {
+	if h.dons.Scope("double_bonuses", user.Perks()...) {
 		*bonus *= 2
 	}
 

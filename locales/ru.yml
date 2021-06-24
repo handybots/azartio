@@ -19,10 +19,10 @@ start: |-
 stats: |-
   <b>📊 Статистика</b>
 
-  <code>{{ printf "Баланс%7d 💰" .Balance }}</code>
-  <code>{{ printf "Перки %7d 🌟" .Perks }}</code>
-  <code>{{ printf "Ставки%7d 🎰" .Bets }}</code>
-  <code>{{ printf "Друзей%7d 🙋‍♂" .Friends }}</code>
+  <code>{{ printf "Баланс%8d 💰" .Balance }}</code>
+  <code>{{ printf "Перки %8d 🌟" .Perks }}</code>
+  <code>{{ printf "Ставки%8d 🎰" .Bets }}</code>
+  <code>{{ printf "Друзей%8d 🙋‍♂" .Friends }}</code>
 
 perks: |-
   🌟 <b>Перки</b>
@@ -30,7 +30,7 @@ perks: |-
   {{ range $i, $perk := . }}
     {{ text (print "perk_" $perk) }} <i>(куплено)</i>
   {{- end }}
-  {{- else -}}
+  {{- else }}
   <i>У вас нет активных перков!</i>
   {{- end }}
 

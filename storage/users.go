@@ -43,6 +43,15 @@ type (
 	}
 )
 
+func (u User) HasPerk(perk string) bool {
+	for _, p := range u.Perks() {
+		if p == perk {
+			return true
+		}
+	}
+	return false
+}
+
 func (u User) Perks() (ps []string) {
 	u.PerksArray.AssignTo(&ps)
 	return

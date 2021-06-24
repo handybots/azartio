@@ -16,13 +16,13 @@ banker:
 hacker:
   level: 2
   scopes:
-    - autoBonuses
+    - auto_bonuses
   meta:
     price: '100'
 
 miser:
   level: 2
   scopes:
-    - doubleBonuses
+    - double_bonuses
   meta:
     price: '100'

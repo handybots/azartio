@@ -3,12 +3,14 @@ module github.com/handybots/azartio
 go 1.15
 
 require (
+	github.com/Masterminds/squirrel v1.5.0
 	github.com/cockroachdb/apd v1.1.0 // indirect
 	github.com/demget/clickrus v1.3.4-0.20201030145135-fd12d66c8589
 	github.com/demget/don v0.0.0-20210201172526-80027315465e
 	github.com/fatih/structs v1.1.0
 	github.com/go-sql-driver/mysql v1.5.0 // indirect
 	github.com/gofrs/uuid v4.0.0+incompatible // indirect
+	github.com/handybots/pkg v0.0.0-20210624175857-9890516576a2
 	github.com/jackc/fake v0.0.0-20150926172116-812a484cc733 // indirect
 	github.com/jackc/pgx v3.6.2+incompatible
 	github.com/jmoiron/sqlx v1.2.0

@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"math/rand"
+	"net/http"
 	"os"
 	"time"
 
@@ -12,6 +13,8 @@ import (
 
 	"github.com/handybots/azartio/handler"
 	"github.com/handybots/azartio/storage"
+	"github.com/handybots/pkg/store/anypay"
+	"github.com/handybots/pkg/store/enotio"
 
 	tele "gopkg.in/tucnak/telebot.v3"
 	"gopkg.in/tucnak/telebot.v3/layout"
@@ -100,6 +103,9 @@ func main() {
 	b.Handle(lt.Callback("bet_g"), h.OnRouletteBet)
 	b.Handle(lt.Callback("bet_b"), h.OnRouletteBet)
 
+	// Balance
+	b.Handle(lt.Callback("deposit"), h.OnDeposit)
+
 	// Perks
 	b.Handle(lt.Callback("perk"), h.OnPerk)
 	b.Handle(lt.Callback("perks_back"), h.OnPerks)
@@ -111,6 +117,12 @@ func main() {
 	// Admin
 	b.Handle("/_balance", h.AdminBalance)
 	b.Handle("/_perk", h.AdminPerk)
+
+	// Payment receivers
+	anypay.HandleReceiver(h.OnPayment)
+	enotio.HandleReceiver(h.OnPayment)
+
+	go http.ListenAndServe(lt.String("addr"), nil)
 
 	b.Start()
 }

@@ -32,7 +32,7 @@ func (h handler) ApplyBonuses(next tele.HandlerFunc) tele.HandlerFunc {
 			return err
 		}
 
-		if h.dons.Scope("autoBonuses", user.Perks()...) {
+		if h.dons.Scope("auto_bonuses", user.Perks()...) {
 			diff := int64(time.Now().Sub(user.LastBonus).Hours() / 24)
 			if diff > 0 {
 				bonus := diff * h.lt.Int64("bonuses.daily")

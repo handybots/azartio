@@ -55,3 +55,7 @@ func (h handler) OnStats(c tele.Context) error {
 		h.lt.Markup(c, "stats"),
 	)
 }
+
+func (h handler) OnDeposit(c tele.Context) error {
+	return c.Send(h.lt.Text(c, "coming_soon"), tele.NoPreview)
+}
