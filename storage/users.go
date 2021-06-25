@@ -14,6 +14,7 @@ type (
 		Charge(amount int64, chat Chat) error
 		ByID(chat Chat) (usr User, _ error)
 		Balance(chat Chat) (a int64, _ error)
+		Friends(chat Chat) (int, error)
 		IsLastBonusUsed(chat Chat) (bool, error)
 		UseBonus(chat Chat) error
 		Subscribed(chat Chat) bool
@@ -144,7 +145,7 @@ func (db *Users) AddPerk(chat Chat, perk string) error {
 	return err
 }
 
-func (db *Users) FriendsByUserID(chat Chat) (i int, _ error){
+func (db *Users) Friends(chat Chat) (i int, _ error) {
 	const q = `select count(*) from users where ref = $1`
 	return i, db.Get(&i, q, chat.Recipient())
 }

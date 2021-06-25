@@ -21,11 +21,21 @@ func (h handler) OnStats(c tele.Context) error {
 		return err
 	}
 
+	bets, err := h.db.Bets.Count(c.Sender())
+	if err != nil {
+		return err
+	}
+
+	friends, err := h.db.Users.Friends(c.Sender())
+	if err != nil {
+		return err
+	}
+
 	stats := Stats{
 		Balance: user.Balance,
 		Perks:   len(user.Perks()),
-		Bets:    0,
-		Friends: 0,
+		Bets:    bets,
+		Friends: friends,
 	}
 
 	if c.Callback() != nil {

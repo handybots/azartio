@@ -10,6 +10,7 @@ type (
 		ByID(id int) (bet Bet, _ error)
 		Create(bet *azartio.Bet, chatID Chat) error
 		ByUserID(chat Chat) (bets []Bet, _ error)
+		Count(chat Chat) (int, error)
 		NotDoneByUserID(user Chat, chat Chat) (bets []Bet, _ error)
 		MakeDoneByChat(result *azartio.RollResult, user Chat, chat Chat) error
 		NotDoneByChat(chat Chat) (bets []Bet, _ error)
@@ -62,7 +63,7 @@ func (db *Bets) NotDoneByChat(chat Chat) (bets []Bet, _ error) {
 	return bets, db.Select(&bets, q, chat.Recipient())
 }
 
-func (db *Bets) CountByUserID(user Chat) (i int, _ error){
+func (db *Bets) Count(chat Chat) (i int, _ error) {
 	const q = `select count(*) from bets where user_id = $1`
 	return i, db.Get(&i, q, chat.Recipient())
 }
