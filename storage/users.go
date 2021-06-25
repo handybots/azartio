@@ -143,3 +143,8 @@ func (db *Users) AddPerk(chat Chat, perk string) error {
 	_, err := db.Exec(q, perk, chat.Recipient())
 	return err
 }
+
+func (db *Users) FriendsByUserID(chat Chat) (i int, _ error){
+	const q = `select count(*) from users where ref = $1`
+	return i, db.Get(&i, q, chat.Recipient())
+}

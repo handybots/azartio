@@ -61,3 +61,8 @@ func (db *Bets) NotDoneByChat(chat Chat) (bets []Bet, _ error) {
 	const q = `select * from bets where chat_id = $1 and done = false`
 	return bets, db.Select(&bets, q, chat.Recipient())
 }
+
+func (db *Bets) CountByUserID(user Chat) (i int, _ error){
+	const q = `select count(*) from bets where user_id = $1`
+	return i, db.Get(&i, q, chat.Recipient())
+}
