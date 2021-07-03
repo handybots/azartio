@@ -10,7 +10,7 @@ compose:
 migrate:
 	docker-compose up --force-recreate migrate
 
-deploy-arm:
+deploy-from-arm:
 	docker buildx build --platform linux/amd64 -t docker.pkg.github.com/handybots/azartio/bot:$$(git rev-parse --short HEAD) .
 	docker push docker.pkg.github.com/handybots/azartio/bot:$$(git rev-parse --short HEAD);
 
