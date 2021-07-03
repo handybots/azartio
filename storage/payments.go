@@ -3,11 +3,9 @@ package storage
 import (
 	"time"
 
-	"github.com/handybots/pkg/store"
-	"github.com/handybots/pkg/store/enotio"
-
 	sq "github.com/Masterminds/squirrel"
 	"github.com/fatih/structs"
+	"github.com/handybots/store"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -39,7 +37,7 @@ func (p Payment) Payment() store.Payment {
 		ID:       p.ID,
 		UserID:   p.UserID,
 		Amount:   p.Amount,
-		Currency: enotio.RUB,
+		Currency: store.RUB,
 		Target:   p.Target,
 		Profit:   p.Profit,
 		PayAt:    p.PayAt,

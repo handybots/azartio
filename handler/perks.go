@@ -5,8 +5,8 @@ import (
 	"time"
 
 	"github.com/handybots/azartio/storage"
-	"github.com/handybots/pkg/store/anypay"
-	"github.com/handybots/pkg/store/enotio"
+	"github.com/handybots/store/anypay"
+	"github.com/handybots/store/enotio"
 
 	tele "gopkg.in/tucnak/telebot.v3"
 )

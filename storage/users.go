@@ -31,7 +31,6 @@ type (
 		CreatedAt  time.Time           `sq:"created_at,omitempty"`
 		UpdatedAt  time.Time           `sq:"updated_at,omitempty"`
 		ID         int                 `sq:"id,omitempty"`
-		Lang       string              `sq:"lang,omitempty"` // TODO: remove
 		Ref        string              `sq:"ref,omitempty"`
 		Balance    int64               `sq:"balance,omitempty"`
 		LastBonus  time.Time           `sq:"last_bonus,omitempty"`
@@ -59,7 +58,7 @@ func (u User) Perks() (ps []string) {
 }
 
 func (db *Users) Create(chat Chat, ref string) error {
-	const q = `INSERT INTO users (id, lang, ref) VALUES ($1, 'ru', $2)`
+	const q = `INSERT INTO users (id, ref) VALUES ($1, $2)`
 	_, err := db.Exec(q, chat.Recipient(), ref)
 	return err
 }

@@ -19,14 +19,18 @@ func (h handler) Validate(next tele.HandlerFunc) tele.HandlerFunc {
 			})
 		}
 
+		c.Set("exists", exists)
 		return next(c)
 	}
 }
 
 func (h handler) ApplyBonuses(next tele.HandlerFunc) tele.HandlerFunc {
 	return func(c tele.Context) error {
-		chat := c.Sender()
+		if !c.Get("exists").(bool) {
+			return next(c)
+		}
 
+		chat := c.Sender()
 		user, err := h.db.Users.ByID(chat)
 		if err != nil {
 			return err

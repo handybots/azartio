@@ -10,7 +10,7 @@ require (
 	github.com/fatih/structs v1.1.0
 	github.com/go-sql-driver/mysql v1.5.0 // indirect
 	github.com/gofrs/uuid v4.0.0+incompatible // indirect
-	github.com/handybots/pkg v0.0.0-20210624175857-9890516576a2
+	github.com/handybots/store v0.0.0-20210703102602-7e84b654184a
 	github.com/jackc/fake v0.0.0-20150926172116-812a484cc733 // indirect
 	github.com/jackc/pgx v3.6.2+incompatible
 	github.com/jmoiron/sqlx v1.2.0
@@ -18,5 +18,5 @@ require (
 	github.com/sirupsen/logrus v1.7.0
 	github.com/stretchr/testify v1.5.1
 	golang.org/x/crypto v0.0.0-20201221181555-eec23a3978ad // indirect
-	gopkg.in/tucnak/telebot.v3 v3.0.0-20210620160031-9c67c3159284
+	gopkg.in/tucnak/telebot.v3 v3.0.0-20210703231635-83bd8dd89d7f
 )

@@ -3,7 +3,7 @@ settings:
   parse_mode: html
 
 config:
-  addr: ':9091' # payment receivers
+  store_id: 2
   sponsor_chat: -1001381320622
 
   bonuses.start: 500
