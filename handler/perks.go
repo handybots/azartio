@@ -46,6 +46,8 @@ func (h *handler) OnPerks(c tele.Context) error {
 }
 
 func (h *handler) OnPerk(c tele.Context) error {
+	defer c.Respond()
+
 	don := h.dons.Get(c.Data())
 	if don.Level == 0 {
 		return c.Edit(

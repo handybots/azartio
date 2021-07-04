@@ -1,5 +1,7 @@
 package azartio
 
+const StoreAppID = 2
+
 // Roulette signs
 const (
 	Clever = "g"

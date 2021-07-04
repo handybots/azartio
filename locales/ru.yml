@@ -125,7 +125,7 @@ join_ref: 'Кто-то перешёл по твоей реферальной с�
 #
 
 perk: |-
-  {{ text (print "perk_" .) }}
+  <b>{{ text (print "perk_" .) }}</b>
   {{ text (print "perk_desc_" .) }}
 
 perk_mafioso: 🎩 Мафиози

@@ -17,5 +17,6 @@ WORKDIR /app
 COPY --from=builder /src/bot .
 COPY --from=builder /src/bot.yml .
 COPY --from=builder /src/don.yml .
+COPY --from=builder /src/locales .
 
 ENTRYPOINT ["/app/bot"]

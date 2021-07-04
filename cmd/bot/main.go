@@ -10,6 +10,7 @@ import (
 	"github.com/demget/don"
 	"github.com/sirupsen/logrus"
 
+	"github.com/handybots/azartio/azartio"
 	"github.com/handybots/azartio/handler"
 	"github.com/handybots/azartio/storage"
 	"github.com/handybots/store"
@@ -117,7 +118,7 @@ func main() {
 	b.Handle("/_perk", h.AdminPerk)
 
 	// Payment receivers
-	go store.Listen(lt.Int("store_id"), h.OnPayment)
+	go store.Listen(azartio.StoreAppID, h.OnPayment)
 
 	b.Start()
 }

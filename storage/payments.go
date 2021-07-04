@@ -1,6 +1,7 @@
 package storage
 
 import (
+	"github.com/handybots/azartio/azartio"
 	"time"
 
 	sq "github.com/Masterminds/squirrel"
@@ -34,6 +35,7 @@ type (
 
 func (p Payment) Payment() store.Payment {
 	return store.Payment{
+		AppID:    azartio.StoreAppID,
 		ID:       p.ID,
 		UserID:   p.UserID,
 		Amount:   p.Amount,
