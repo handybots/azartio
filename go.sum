@@ -360,10 +360,6 @@ gopkg.in/go-playground/validator.v9 v9.30.0/go.mod h1:+c9/zcJMFNgbLvly1L1V+PpxWd
 gopkg.in/ini.v1 v1.51.0 h1:AQvPpx3LzTDM0AjnIRlVFwFFGC+npRopjZxLJj6gdno=
 gopkg.in/ini.v1 v1.51.0/go.mod h1:pNLf8WUiyNEtQjuu5G5vTm06TEv9tsIgeAvK8hOrP4k=
 gopkg.in/resty.v1 v1.12.0/go.mod h1:mDo4pnntr5jdWRML875a/NmxYqAlA73dVijT2AXvQQo=
-gopkg.in/tucnak/telebot.v3 v3.0.0-20210620160031-9c67c3159284 h1:4bPskst4ddAbsHVQs2NWoYVzx6b/r25MjhoYRCx3aK8=
-gopkg.in/tucnak/telebot.v3 v3.0.0-20210620160031-9c67c3159284/go.mod h1:rQkLEeZ6z+UenbjlO1GjW24ZIZ6yJWqv92jcXpGpiR8=
-gopkg.in/tucnak/telebot.v3 v3.0.0-20210621112341-55a27add1d11 h1:U0smmQyeM33FDHliaOb7GaCMLII3wdnUagOVDHw+1Bs=
-gopkg.in/tucnak/telebot.v3 v3.0.0-20210621112341-55a27add1d11/go.mod h1:rQkLEeZ6z+UenbjlO1GjW24ZIZ6yJWqv92jcXpGpiR8=
 gopkg.in/tucnak/telebot.v3 v3.0.0-20210703231635-83bd8dd89d7f h1:vK+TIdk+dzObRkZD1ZN7R5JwqJdkE0K/XxCuUR8l3qU=
 gopkg.in/tucnak/telebot.v3 v3.0.0-20210703231635-83bd8dd89d7f/go.mod h1:rQkLEeZ6z+UenbjlO1GjW24ZIZ6yJWqv92jcXpGpiR8=
 gopkg.in/yaml.v2 v2.0.0-20170812160011-eb3733d160e7/go.mod h1:JAlM8MvJe8wmxCU4Bli9HhUf9+ttbYbLASfIpnQbh74=
