@@ -48,7 +48,7 @@ func (p Payment) Payed() bool {
 	return p.PayAt != nil
 }
 
-func (db *Payments) Create(p Payment) (int, error) {
+func (db *Payments) Create(p Payment) (id int, _ error) {
 	q, args, err := sq.
 		Insert("payments").
 		SetMap(structs.Map(p)).
@@ -59,17 +59,11 @@ func (db *Payments) Create(p Payment) (int, error) {
 		return 0, err
 	}
 
-	r, err := db.Exec(q, args...)
-	if err != nil {
+	if err := db.QueryRow(q, args...).Scan(&id); err != nil {
 		return 0, err
 	}
 
-	id, err := r.LastInsertId()
-	if err != nil {
-		return 0, err
-	}
-
-	return int(id), nil
+	return
 }
 
 func (db *Payments) ByID(id int) (p Payment, _ error) {
