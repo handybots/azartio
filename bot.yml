@@ -93,7 +93,7 @@ buttons:
     text: 🧑‍💻 Хакер
   perk_king:
     <<: *perk
-    callback_data: king
+    callback_data: miser
     text: Скряга 🤑
   perk_clown:
     <<: *perk
@@ -114,10 +114,10 @@ buttons:
 
   perk_buy:
     text: Приобрести за {{ .Amount }}₽
-    url: '{{ .EnotioURL }}&c={{ text (print `perk_` .Perk) }}'
+    url: '{{ .EnotioURL }}&c={{ text (print `perk_short_` .Perk) }}'
   perk_buy_alt:
     text: Не получается оплатить?
-    url: '{{ .AnypayURL }}&desc={{ text (print `perk_` .Perk) }}'
+    url: '{{ .AnypayURL }}&desc={{ text (print `perk_short_` .Perk) }}'
   perks_support:
     text: Все ещё есть проблемы?
     url: https://t.me/HandyManagerBot
