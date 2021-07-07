@@ -52,7 +52,7 @@ func (h handler) OnStats(c tele.Context) error {
 			h.lt.Markup(c, "stats"),
 		)
 
-		time.AfterFunc(10*time.Second, func() {
+		time.AfterFunc(h.lt.Duration("delete_delay"), func() {
 			c.Delete()
 			h.b.Delete(msg)
 		})

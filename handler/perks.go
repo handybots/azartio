@@ -31,7 +31,7 @@ func (h *handler) OnPerks(c tele.Context) error {
 			h.lt.Markup(c, "perks"),
 		)
 
-		time.AfterFunc(10*time.Second, func() {
+		time.AfterFunc(h.lt.Duration("delete_delay"), func() {
 			c.Delete()
 			h.b.Delete(msg)
 		})

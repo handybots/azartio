@@ -14,7 +14,7 @@ func (h *handler) OnBonuses(c tele.Context) error {
 			tele.NoPreview,
 		)
 
-		time.AfterFunc(10*time.Second, func() {
+		time.AfterFunc(h.lt.Duration("delete_delay"), func() {
 			c.Delete()
 			h.b.Delete(msg)
 		})

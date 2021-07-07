@@ -4,6 +4,7 @@ settings:
 
 config:
   sponsor_chat: -1001381320622
+  delete_delay: 20s
 
   bonuses.start: 500
   bonuses.daily: 100
