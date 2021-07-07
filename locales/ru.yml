@@ -47,9 +47,10 @@ leaderboard: |-
 
   {{ range $i, $user := .Top10 -}}
   <b>{{ $user.Place }}</b> 🏅 {{ $user.FirstName }} – {{ $user.Balance }}
-  {{ end }}
-
-  {{ if ge .You.Place 10 }}<b>{{ .You.Place }}</b> 🍪 Ты – {{ .You.Balance }}{{ end }}
+  {{ end -}}
+  {{ if ge .You.Place 10 }}
+  <b>{{ .You.Place }}</b> 🍪 Ты – {{ .You.Balance }}
+  {{- end }}
 
 bonuses: |-
   <b>🎁 Бонусы</b>

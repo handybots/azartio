@@ -43,7 +43,7 @@ func (h handler) OnLeaderboard(c tele.Context) error {
 	lb := Leaderboard{
 		You: LeaderboardUser{User: you, Chat: c.Chat(), Place: place},
 	}
-	if len(users) >= 10 {
+	if len(users) > 10 {
 		users = users[:9]
 	}
 

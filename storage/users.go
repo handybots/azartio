@@ -134,7 +134,7 @@ func (db *Users) SetSubscribed(chat Chat, sub bool) error {
 }
 
 func (db *Users) Leaderboard() (users []User, _ error) {
-	const q = `select * from users order by balance desc limit 10`
+	const q = `select * from users order by balance desc`
 	return users, db.Select(&users, q)
 }
 
