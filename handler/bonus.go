@@ -55,6 +55,13 @@ func (h handler) OnBonusDaily(c tele.Context) error {
 }
 
 func (h handler) OnBonusSponsor(c tele.Context) error {
+	if h.db.Users.Subscribed(c.Sender()) {
+		return c.Respond(&tele.CallbackResponse{
+			Text:      h.lt.Text(c, "has_subscribed"),
+			ShowAlert: true,
+		})
+	}
+
 	if !h.subscribedOnSponsor(c.Sender()) {
 		return c.Respond(&tele.CallbackResponse{
 			Text:      h.lt.Text(c, "not_subscribed"),

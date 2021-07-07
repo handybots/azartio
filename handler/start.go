@@ -41,9 +41,8 @@ func (h handler) OnStart(c tele.Context) error {
 			if err := h.chargeBonus(chat, &friendBonus); err == nil {
 				h.b.Send(chat, h.lt.Text(c, "ref", friendBonus))
 			}
-
 			if err := h.chargeBonus(refBy, &friendBonus); err == nil {
-				defer h.b.Send(refBy, h.lt.Text(c, "join_ref", friendBonus))
+				defer h.b.Send(refBy, h.lt.TextLocale("ru", "join_ref", friendBonus))
 			}
 		}
 	}

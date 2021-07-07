@@ -45,7 +45,7 @@ leaderboard: |-
   {{ if gt (len .Top3) 1 }}{{ $user := index .Top3 1 }}🥈 {{ $user.FirstName }} – {{ $user.Balance }}{{ end }}
   {{ if gt (len .Top3) 2 }}{{ $user := index .Top3 2 }}🥉 {{ $user.FirstName }} – {{ $user.Balance }}{{ end }}
 
-  {{ range $i, $user := .Top10 }}
+  {{ range $i, $user := .Top10 -}}
   <b>{{ $user.Place }}</b> 🏅 {{ $user.FirstName }} – {{ $user.Balance }}
   {{ end }}
 
@@ -112,6 +112,7 @@ bonus: Ты получил {{.}} фишек!
 bonus_hacker: 🧑‍💻 Ты взломал бота и получил <b>{{.}} фишек</b>!
 bonus_used: Ты уже получил бонус за сегодня!
 not_subscribed: Ты не подписан на канал!
+has_subscribed: Ты уже подписан!
 
 not_enough_money: Недостаточно фишек!
 no_bets: Недостаточно ставок!
