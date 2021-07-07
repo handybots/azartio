@@ -83,7 +83,7 @@ func (h handler) subscribedOnSponsor(r tele.Recipient) bool {
 	}
 
 	switch member.Role {
-	case tele.Restricted, tele.Kicked, tele.Left:
+	case tele.Creator, tele.Administrator, tele.Member:
 		return true
 	default:
 		return false
