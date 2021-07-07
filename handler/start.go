@@ -39,13 +39,12 @@ func (h handler) OnStart(c tele.Context) error {
 		refBy, err := h.b.ChatByID(ref)
 		if err == nil {
 			if err := h.chargeBonus(chat, &friendBonus); err == nil {
-				h.b.Send(chat, h.lt.Text(c, "ref"))
+				h.b.Send(chat, h.lt.Text(c, "ref", friendBonus))
 			}
 
-			if err := h.chargeBonus(chat, &friendBonus); err == nil {
-				defer h.b.Send(refBy, h.lt.Text(c, "join_ref", chat.Recipient()))
+			if err := h.chargeBonus(refBy, &friendBonus); err == nil {
+				defer h.b.Send(refBy, h.lt.Text(c, "join_ref", friendBonus))
 			}
-
 		}
 	}
 
