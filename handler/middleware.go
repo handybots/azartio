@@ -14,7 +14,7 @@ func (h handler) Validate(next tele.HandlerFunc) tele.HandlerFunc {
 		}
 
 		if !exists && c.Callback() != nil {
-			h.registerUser("", c.Sender())
+			h.registerUser("", c.Sender(), c)
 			return c.Respond(&tele.CallbackResponse{
 				Text: h.lt.Text(c, "unregistered"),
 			})

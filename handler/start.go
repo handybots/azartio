@@ -22,7 +22,7 @@ func (h handler) OnStart(c tele.Context) error {
 	}
 
 	if !exists {
-		err := h.registerUser(ref, chat)
+		err := h.registerUser(ref, chat, c)
 		if err != nil {
 			return err
 		}
@@ -36,7 +36,7 @@ func (h handler) OnStart(c tele.Context) error {
 	)
 }
 
-func (h *handler) registerUser(ref string, chat *tele.User) error {
+func (h *handler) registerUser(ref string, chat *tele.User, c tele.Context) error {
 	log.Println("Start from", chat.Recipient())
 	if err := h.db.Users.Create(chat, ref); err != nil {
 		return err
@@ -60,5 +60,5 @@ func (h *handler) registerUser(ref string, chat *tele.User) error {
 			defer h.b.Send(refBy, h.lt.TextLocale("ru", "join_ref", friendBonus))
 		}
 	}
-
+	return nil
 }
