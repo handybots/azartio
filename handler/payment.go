@@ -53,6 +53,12 @@ func (h handler) OnPayment(p store.Payment) {
 		_, err = h.b.Send(chat, h.lt.TextLocale("ru", "payed_perk", perk))
 		if err != nil {
 			logerr(err)
+			return
+		}
+
+		bonus := h.lt.Int64("bonuses.donate")
+		if err := h.chargeBonus(chat, &bonus); err != nil {
+			logerr(err)
 		}
 	}
 }

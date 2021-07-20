@@ -9,6 +9,7 @@ config:
   bonuses.start: 500
   bonuses.daily: 100
   bonuses.friend: 500
+  bonuses.donate: 1000
   bonuses.sponsor: 1000
 
 buttons:

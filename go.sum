@@ -95,6 +95,10 @@ github.com/grpc-ecosystem/go-grpc-prometheus v1.2.0/go.mod h1:8NvIoxWQoOIhqOTXgf
 github.com/grpc-ecosystem/grpc-gateway v1.9.0/go.mod h1:vNeuVxBJEsws4ogUvrchl83t/GYV9WGTSLVdBhOQFDY=
 github.com/handybots/store v0.0.0-20210703102602-7e84b654184a h1:GSv0d5CdFOKYvS6mPmi8L6XKb9+jrRGuz4bHhvKmd7w=
 github.com/handybots/store v0.0.0-20210703102602-7e84b654184a/go.mod h1:vfjN/EzJKTLVFXf28Cceqpiz2wc5uuetUQN6GRFwTTg=
+github.com/handybots/store v0.0.0-20210706104952-28087253e0cb h1:coTvVMnTXd6FIL01pefCbkkAzHcNHA8pQfwbC1i+BA0=
+github.com/handybots/store v0.0.0-20210706104952-28087253e0cb/go.mod h1:vfjN/EzJKTLVFXf28Cceqpiz2wc5uuetUQN6GRFwTTg=
+github.com/handybots/store v0.0.0-20210708093413-49af002346a1 h1:+k1yYhs8ZgzqnD/aw2PwHAk3gpmZur8Gk65zOzpJbss=
+github.com/handybots/store v0.0.0-20210708093413-49af002346a1/go.mod h1:vfjN/EzJKTLVFXf28Cceqpiz2wc5uuetUQN6GRFwTTg=
 github.com/hashicorp/consul/api v1.1.0/go.mod h1:VmuI/Lkw1nC05EYQWNKwWGbkg+FbDBtguAZLlVdkD9Q=
 github.com/hashicorp/consul/sdk v0.1.1/go.mod h1:VKf9jXwCTEY1QZP2MOLRhb5i/I/ssyNV1vwHyQBF0x8=
 github.com/hashicorp/errwrap v1.0.0/go.mod h1:YH+1FKiLXxHSkmPseP+kNlulaMuP3n2brvKWEqk/Jc4=

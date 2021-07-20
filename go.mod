@@ -10,7 +10,7 @@ require (
 	github.com/fatih/structs v1.1.0
 	github.com/go-sql-driver/mysql v1.5.0 // indirect
 	github.com/gofrs/uuid v4.0.0+incompatible // indirect
-	github.com/handybots/store v0.0.0-20210703102602-7e84b654184a
+	github.com/handybots/store v0.0.0-20210708093413-49af002346a1
 	github.com/jackc/fake v0.0.0-20150926172116-812a484cc733 // indirect
 	github.com/jackc/pgx v3.6.2+incompatible
 	github.com/jmoiron/sqlx v1.2.0
