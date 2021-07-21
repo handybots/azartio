@@ -13,7 +13,6 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
-
 *.idea
 
 # Environment files
@@ -21,3 +20,6 @@
 
 # Vim swap files
 *.swp
+
+# Misc
+ideas.db

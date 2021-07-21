@@ -1,0 +1,15 @@
+settings:
+  parse_mode: html
+  token_env: TOKEN
+
+buttons:
+  loading:
+    unique: loading
+    text: ...
+  vote:
+    unique: vote
+    data: '{{ .ID }}'
+    text: '{{ .Title }} — {{ .Percentage }}%'
+
+markups:
+  loading: [[ loading ]]
