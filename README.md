@@ -1,2 +1,0 @@
-# azartio
-gambling telegram bot
